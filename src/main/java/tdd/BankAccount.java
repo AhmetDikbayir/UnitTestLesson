@@ -6,46 +6,41 @@ import java.util.List;
 public class BankAccount {
 
     private String accountNumber;
+
     private double balance;
-    private double dailyWithDrawnLimit;
 
-    private double dailyWithDrawnAmount;
+    private double dailyWithdrawnLimit;
 
-    private List<String> history = new ArrayList<>();
+    private double dailyWithdrawnAmount;
 
-    public BankAccount(String accountNumber, double balance, double dailyWithDrawnLimit) {
+    private List<String> history=new ArrayList<>();
+
+    //param const
+
+    public BankAccount(String accountNumber, double balance, double dailyWithdrawnLimit) {
         this.accountNumber = accountNumber;
         this.balance = balance;
-        this.dailyWithDrawnLimit = dailyWithDrawnLimit;
+        this.dailyWithdrawnLimit = dailyWithdrawnLimit;
     }
 
     //getter-setter
     public String getAccountNumber(){
         return this.accountNumber;
     }
-
     public Double getBalance(){
         return this.balance;
     }
 
     public Double getDailyWithdrawnLimit(){
-        return this.dailyWithDrawnLimit;
+        return this.dailyWithdrawnLimit;
     }
 
-    public double getDailyWithDrawnAmount() {
-        return dailyWithDrawnAmount;
-    }
-
-    public void setDailyWithDrawnAmount(double dailyWithDrawnAmount) {
-        this.dailyWithDrawnAmount = dailyWithDrawnAmount;
+    public double getDailyWithdrawnAmount() {
+        return dailyWithdrawnAmount;
     }
 
     public List<String> getHistory() {
         return history;
-    }
-
-    public void setHistory(List<String> history) {
-        this.history = history;
     }
 
     public void setAccountNumber(String accountNumber) {
@@ -56,7 +51,42 @@ public class BankAccount {
         this.balance = balance;
     }
 
-    public void setDailyWithDrawnLimit(double dailyWithDrawnLimit) {
-        this.dailyWithDrawnLimit = dailyWithDrawnLimit;
+    public void setDailyWithdrawnLimit(double dailyWithdrawnLimit) {
+        this.dailyWithdrawnLimit = dailyWithdrawnLimit;
     }
+
+    public void setDailyWithdrawnAmount(double dailyWithdrawnAmount) {
+        this.dailyWithdrawnAmount = dailyWithdrawnAmount;
+    }
+
+    public void setHistory(List<String> history) {
+        this.history = history;
+    }
+
+    //işlevsel metodlar
+    //para yatırma
+    public void deposit(double amount){
+
+        if (amount>0){
+            this.balance+=amount;
+            this.history.add("Para yatırma : "+amount);
+        }else {
+            throw new RuntimeException("Miktar pozitif olmalı!");
+        }
+
+    }
+
+
+    public boolean withdraw(double amount){
+
+        if (amount>0 && amount<=this.balance && (this.dailyWithdrawnAmount+amount)<=this.dailyWithdrawnLimit){
+            this.balance-=amount;
+            this.dailyWithdrawnAmount+=amount;
+            this.history.add("Para çekme : "+amount);
+            return true;
+        }
+
+        return false;
+    }
+
 }
